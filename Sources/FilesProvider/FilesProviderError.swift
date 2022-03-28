@@ -1,8 +1,8 @@
 import Foundation
 
 public enum FilesProviderError {
-    case emptyDirectory
-    case emptyFile
+    case noDirectory
+    case noFile
 }
 
 // MARK: - Error
@@ -10,9 +10,9 @@ public enum FilesProviderError {
 extension FilesProviderError: Error {
     public var localizedDescription: String {
         switch self {
-        case .emptyDirectory:
-            return "Directory is empty"
-        case .emptyFile:
+        case .noDirectory:
+            return "There is no directory by specified URL"
+        case .noFile:
             return "There is no file by specified URL"
         }
     }

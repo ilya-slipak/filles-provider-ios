@@ -22,9 +22,9 @@ public struct FilesProvider {
 // MARK: - FileManageable
 
 extension FilesProvider: FilesManageable {
-    public func save(data: Data, fileName: String) throws -> URL {
+    public func save(data: Data, by name: String) throws -> URL {
         let storageURL = try getStorageURL()
-        let fileURL = storageURL.appendingPathComponent(fileName)
+        let fileURL = storageURL.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: fileURL.path)
         //TODO: Check scenario when user try to save new file by url which point to another file
         if !isExist {
@@ -38,7 +38,7 @@ extension FilesProvider: FilesManageable {
         let fileURL = storageURL.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: fileURL.path)
         guard isExist else {
-            throw FilesProviderError.emptyFile
+            throw FilesProviderError.noFile
         }
         return fileURL
     }
@@ -46,7 +46,7 @@ extension FilesProvider: FilesManageable {
     public func delete(at path: String) throws {
         let isExist = fileManager.fileExists(atPath: path)
         guard isExist else {
-            throw FilesProviderError.emptyFile
+            throw FilesProviderError.noFile
         }
         try fileManager.removeItem(atPath: path)
     }
@@ -64,7 +64,7 @@ extension FilesProvider: FilesProviderConfigurable {
     func getStorageURL() throws -> URL {
         let urls = fileManager.urls(for: directory, in: domainMask)
         guard let directory = urls.first else {
-            throw FilesProviderError.emptyDirectory
+            throw FilesProviderError.noDirectory
         }
         let storageURL = directory.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: storageURL.path)
