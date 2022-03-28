@@ -43,20 +43,20 @@ extension FilesProvider: FilesManageable {
         return fileURL
     }
     
-    public func delete(at path: String) throws {
+    public func delete(by name: String) throws {
         let storageURL = try getStorageURL()
-        let fileURL = storageURL.appendingPathComponent(path)
+        let fileURL = storageURL.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: fileURL.path)
         guard isExist else {
             throw FilesProviderError.noFile
         }
-        try fileManager.removeItem(atPath: path)
+        try fileManager.removeItem(atPath: fileURL.path)
     }
     
     public func removeAll() throws {
         let storageURL = try getStorageURL()
-        let path = storageURL.absoluteString
-        try delete(at: path)
+        let storageName = storageURL.absoluteString
+        try delete(by: storageName)
     }
 }
 
