@@ -44,7 +44,9 @@ extension FilesProvider: FilesManageable {
     }
     
     public func delete(at path: String) throws {
-        let isExist = fileManager.fileExists(atPath: path)
+        let storageURL = try getStorageURL()
+        let fileURL = storageURL.appendingPathComponent(path)
+        let isExist = fileManager.fileExists(atPath: fileURL.path)
         guard isExist else {
             throw FilesProviderError.noFile
         }
