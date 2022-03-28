@@ -1,5 +1,5 @@
 import XCTest
-@testable import FileProvider
+@testable import FilesProvider
 
 final class FilesProviderTests: XCTestCase {
     func testExample() throws {
