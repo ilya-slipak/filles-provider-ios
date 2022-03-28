@@ -26,10 +26,10 @@ extension FilesProvider: FilesManageable {
         let storageURL = try getStorageURL()
         let fileURL = storageURL.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: fileURL.path)
-        //TODO: Check scenario when user try to save new file by url which point to another file
-        if !isExist {
-            try data.write(to: fileURL)
+        guard !isExist else {
+            throw FilesProviderError.urlAlreadyInUse
         }
+        try data.write(to: fileURL)
         return fileURL
     }
     
@@ -55,8 +55,7 @@ extension FilesProvider: FilesManageable {
     
     public func removeAll() throws {
         let storageURL = try getStorageURL()
-        let storageName = storageURL.absoluteString
-        try delete(by: storageName)
+        try delete(by: storageURL.absoluteString)
     }
 }
 
