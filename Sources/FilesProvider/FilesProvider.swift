@@ -1,9 +1,14 @@
 import Foundation
 
 public struct FilesProvider {
+    // MARK: - Private Properties
+    
     private let name: String
+    
     private let directory: FileManager.SearchPathDirectory
+    
     private let domainMask: FileManager.SearchPathDomainMask
+    
     private let fileManager: FileManager
     
     public init(
@@ -29,7 +34,7 @@ extension FilesProvider: FilesManageable {
         guard !isExist else {
             throw FilesProviderError.urlAlreadyInUse
         }
-        try data.write(to: fileURL)
+        try fileManager.save(data: data, to: fileURL)
         return fileURL
     }
     
@@ -59,15 +64,15 @@ extension FilesProvider: FilesManageable {
     }
 }
 
-// MARK: - FilesProviderConfigurable
+// MARK: - Helpers
 
-extension FilesProvider: FilesProviderConfigurable {
+fileprivate extension FilesProvider {
     func getStorageURL() throws -> URL {
         let urls = fileManager.urls(for: directory, in: domainMask)
-        guard let directory = urls.first else {
+        guard let directoryURL = urls.first else {
             throw FilesProviderError.noDirectory
         }
-        let storageURL = directory.appendingPathComponent(name)
+        let storageURL = directoryURL.appendingPathComponent(name)
         let isExist = fileManager.fileExists(atPath: storageURL.path)
         if !isExist {
             try fileManager.createDirectory(
