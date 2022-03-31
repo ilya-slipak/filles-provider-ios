@@ -6,17 +6,17 @@ public enum FilesProviderError {
     case urlAlreadyInUse
 }
 
-// MARK: - Error
+// MARK: - LocalizedError
 
-extension FilesProviderError: Error {
-    public var localizedDescription: String {
+extension FilesProviderError: LocalizedError {
+    public var errorDescription: String? {
         switch self {
         case .noDirectory:
             return "There is no directory by specified URL"
         case .noFile:
             return "There is no file by specified URL"
         case .urlAlreadyInUse:
-            return "There is file by specified URL"
+            return "The file already exist by specified URL"
         }
     }
 }

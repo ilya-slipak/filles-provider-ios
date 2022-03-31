@@ -3,7 +3,7 @@ import Foundation
 public struct FilesProvider {
     // MARK: - Private Properties
     
-    private let name: String
+    private let storageName: String
     
     private let directory: FileManager.SearchPathDirectory
     
@@ -12,12 +12,12 @@ public struct FilesProvider {
     private let fileManager: FileManager
     
     public init(
-        name: String = "Storage",
+        storageName: String = "Storage",
         for directory: FileManager.SearchPathDirectory = .documentDirectory,
         in domainMask: FileManager.SearchPathDomainMask = .userDomainMask,
         fileManager: FileManager = .default
     ) {
-        self.name = name
+        self.storageName = storageName
         self.directory = directory
         self.domainMask = domainMask
         self.fileManager = fileManager
@@ -72,7 +72,7 @@ fileprivate extension FilesProvider {
         guard let directoryURL = urls.first else {
             throw FilesProviderError.noDirectory
         }
-        let storageURL = directoryURL.appendingPathComponent(name)
+        let storageURL = directoryURL.appendingPathComponent(storageName)
         let isExist = fileManager.fileExists(atPath: storageURL.path)
         if !isExist {
             try fileManager.createDirectory(
