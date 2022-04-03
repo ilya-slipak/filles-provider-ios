@@ -60,10 +60,10 @@ extension FilesProvider: FilesManageable {
     
     public func removeAll() throws {
         let storageURL = try getStorageURL()
-        try delete(by: storageURL.absoluteString)
+        try fileManager.removeItem(atPath: storageURL.path)
     }
 }
-
+ 
 // MARK: - Helpers
 
 fileprivate extension FilesProvider {
@@ -77,8 +77,7 @@ fileprivate extension FilesProvider {
         if !isExist {
             try fileManager.createDirectory(
                 at: storageURL,
-                withIntermediateDirectories: false,
-                attributes: nil
+                withIntermediateDirectories: false
             )
         }
         return storageURL

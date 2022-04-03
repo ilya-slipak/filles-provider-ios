@@ -32,6 +32,11 @@ final class FilesProviderTests: XCTestCase {
         XCTAssertNoThrow(try filesProvider.delete(by: fileName))
     }
     
+    func test_removeAll_success() {
+        let filesProvider: FilesManageable = FilesProvider(fileManager: MockFileManager())
+        XCTAssertNoThrow(try filesProvider.removeAll())
+    }
+    
     // MARK: - Test Error Cases
     
     func test_saveFile_error_urlAlreadyInUse() throws {
